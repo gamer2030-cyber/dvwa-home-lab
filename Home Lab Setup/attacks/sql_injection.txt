@@ -1,0 +1,29 @@
+DVWA SQL Injection Attack - Lab Notes
+--------------------------------------
+
+Target: DVWA hosted on Ubuntu VM
+Module: SQL Injection (Low Security Level)
+
+1. Navigate to DVWA SQL Injection Module:
+   http://<ubuntu-ip>/DVWA/vulnerabilities/sqli/
+
+2. Injection Payload Used:
+   1' OR '1'='1
+
+3. Result:
+   - Application returned all users from the database
+   - SQL query was improperly sanitized
+   - Indicates classic SQLi vulnerability
+
+4. Observation:
+   - No error messages were shown
+   - Server returned full user list
+   - Attack works only when DVWA security level is LOW
+
+5. Suggested Fix (if patching):
+   - Use parameterized queries (e.g., PDO or mysqli prepared statements)
+   - Sanitize and validate input
+
+6. Screenshot:
+   - Stored in `attacks/screenshots/sql_injection.png`
+

